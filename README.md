@@ -81,12 +81,14 @@ Three user steps, no technical knowledge required: **1)** create your Digital ID
 
 ## Roadmap
 
-1. **Core Protocol Design**
-2. **Alpha Wallet (Desktop)**
-3. **OpenID4VP Integration**
-4. **Issuer Registry & First Integrations**
+1. **Core Protocol Design** — done
+2. **Alpha Wallet (Desktop)** — done
+3. **OpenID4VP Integration** — done
+4. **Issuer Registry & First Integrations** — vertical slice implemented ([issuer_registry zome](https://github.com/Geoking2104/AutonymousMe), Tryorama-verified on Holochain 0.7.1)
 5. **Mobile App & Governance**
 6. **eIDAS 2.0 Production & EUDI Bridge**
+
+> **Implementation status:** the working hApp code (4 Holochain zomes, ZK circuit, verifier SDK, REST API) lives in [Geoking2104/AutonymousMe](https://github.com/Geoking2104/AutonymousMe) — all CI checks green on Holochain 0.7.1.
 
 ---
 
