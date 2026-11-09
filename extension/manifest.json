@@ -19,6 +19,13 @@
     "48": "icons/icon-48.png",
     "128": "icons/icon-128.png"
   },
-  "permissions": ["storage"],
-  "host_permissions": ["http://localhost:8888/*", "http://localhost:9000/*"]
+  "permissions": ["storage", "activeTab"],
+  "host_permissions": ["http://localhost:8888/*", "http://localhost:9000/*"],
+  "content_scripts": [
+    {
+      "matches": ["http://*/*", "https://*/*"],
+      "js": ["dist/content.js"],
+      "run_at": "document_idle"
+    }
+  ]
 }

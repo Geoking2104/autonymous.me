@@ -7,6 +7,7 @@
  */
 
 import { WalletClient } from "./client.js";
+import { PresentFlow } from "./present-flow.js";
 
 // ── i18n minimal EN/FR ──────────────────────────────────────────
 const STRINGS = {
@@ -25,6 +26,12 @@ const STRINGS = {
     chainEmpty: "The chain appears after DID creation.",
     conductor: "Conductor",
     active: "active",
+    willShare: "will be shared",
+    willHide: "hidden",
+    sending: "Presenting…",
+    presentOk: "Verified ✓",
+    presentFail: "Delivery failed",
+    bannerTitle: "Verification request",
     ago: (dateStr) => timeAgo(dateStr, "en"),
   },
   fr: {
@@ -42,6 +49,12 @@ const STRINGS = {
     chainEmpty: "La chaîne apparaîtra après la création du DID.",
     conductor: "Conductor",
     active: "active",
+    willShare: "sera transmis",
+    willHide: "masqué",
+    sending: "Présentation…",
+    presentOk: "Vérifié ✓",
+    presentFail: "Échec d'envoi",
+    bannerTitle: "Requête de vérification",
     ago: (dateStr) => timeAgo(dateStr, "fr"),
   },
 };
@@ -190,3 +203,160 @@ settingsBtn.addEventListener("click", () => {
 // ── Démarrage ───────────────────────────────────────────────────
 applyStaticLabels();
 load();
+checkPendingRequest();
+
+/**
+ * Orchestrations Ã©tape 2 â€” injectÃ©es en fin de popup.js
+ * (banniÃ¨re requÃªte pendante + vue PrÃ©sentation OpenID4VP).
+ */
+
+// â”€â”€ RequÃªte OpenID4VP pendante â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+function checkPendingRequest() {
+  chrome.storage.local.get(["pendingRequest"], ({ pendingRequest }) => {
+    if (!pendingRequest?.raw) return;
+    requestBanner.hidden = false;
+    try {
+      bannerSource.textContent = pendingRequest.source?.host
+        ? pendingRequest.source.host
+        : new URL(pendingRequest.raw).host;
+    } catch {
+      bannerSource.textContent = "â€”";
+    }
+  });
+}
+
+requestBanner.addEventListener("click", () => openPresentView());
+
+// â”€â”€ Vue PrÃ©sentation â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+async function openPresentView() {
+  const { pendingRequest } = await chrome.storage.local.get(["pendingRequest"]);
+  if (!pendingRequest?.raw) return;
+
+  setStatus("waiting", STRINGS[lang].searching);
+  try {
+    client = client ?? (await WalletClient.connect());
+    setStatus("ok", STRINGS[lang].connected);
+  } catch {
+    setStatus("err", STRINGS[lang].offline);
+    return;
+  }
+
+  try {
+    const creds = await client.listCredentials();
+    if (!creds?.length) throw new Error("no-credential");
+    const cred = creds[0]; // Ã©tape 2 : premier credential (sÃ©lection multiple plus tard)
+
+    presentFlow = new PresentFlow(client, { onDone: backToMain });
+    const parsed = await presentFlow.begin(pendingRequest.raw, {
+      label: cred.credential.label,
+      credential_id: cred.action_hash,
+      token: cred.credential.token,
+      available_claims: parseClaims(cred.credential.available_claims),
+    });
+    renderPresentView(parsed, pendingRequest.source);
+  } catch (err) {
+    console.warn("[autonymous] present", err);
+    setStatus(
+      "err",
+      err?.message === "no-credential"
+        ? STRINGS[lang].credentialsEmpty
+        : String(err?.message ?? err),
+    );
+  }
+}
+
+function parseClaims(rawClaims) {
+  if (Array.isArray(rawClaims)) return rawClaims;
+  if (typeof rawClaims === "string" && rawClaims.length > 0) {
+    try {
+      return JSON.parse(rawClaims);
+    } catch {
+      return rawClaims.split(",").map((s) => s.trim());
+    }
+  }
+  return [];
+}
+
+function renderPresentView(parsed, source) {
+  const view = $("view");
+  const tpl = document.getElementById("present-view");
+  view.replaceChildren(tpl.content.cloneNode(true));
+
+  $("pv-verifier-name").textContent = source?.title ?? parsed.request.client_id;
+  $("pv-verifier-id").textContent = parsed.request.client_id;
+
+  const list = $("pv-claims");
+  const states = presentFlow.claimState();
+  list.replaceChildren(
+    ...states.map((c) => {
+      const li = document.createElement("li");
+      li.innerHTML = `
+        <div class="li-body">
+          <p class="claim-name"></p>
+          <p class="claim-state"></p>
+        </div>
+        <button class="claim-toggle" role="switch" aria-checked="false"></button>`;
+      li.querySelector(".claim-name").textContent = c.name;
+      const stateEl = li.querySelector(".claim-state");
+      const tog = li.querySelector(".claim-toggle");
+      const paint = () => {
+        tog.setAttribute("aria-checked", String(c.selected));
+        stateEl.textContent = c.selected
+          ? STRINGS[lang].willShare
+          : STRINGS[lang].willHide;
+        stateEl.classList.toggle("on", c.selected);
+      };
+      paint();
+      tog.addEventListener("click", () => {
+        if (presentFlow.toggle(c.name)) paint();
+      });
+      return li;
+    }),
+  );
+
+  $("pv-approve").addEventListener("click", approvePresentation);
+  $("pv-deny").addEventListener("click", denyPresentation);
+}
+
+async function approvePresentation() {
+  const btn = $("pv-approve");
+  btn.disabled = true;
+  const result = $("pv-result");
+  result.hidden = false;
+  $("pv-result-text").textContent = STRINGS[lang].sending;
+  $("pv-result-text").className = "result-text";
+  try {
+    const r = await presentFlow.approve();
+    const txt = $("pv-result-text");
+    if (r.ok) {
+      txt.textContent = STRINGS[lang].presentOk;
+      txt.className = "result-text ok";
+      chrome.runtime.sendMessage({ type: "CLEAR_PENDING" });
+      setTimeout(() => backToMain(), 1200);
+    } else {
+      txt.textContent = `${STRINGS[lang].presentFail}${r.error ? ` (${r.error})` : ""}`;
+      txt.className = "result-text err";
+      btn.disabled = false;
+    }
+  } catch (err) {
+    const txt = $("pv-result-text");
+    txt.textContent = String(err?.message ?? err);
+    txt.className = "result-text err";
+    btn.disabled = false;
+  }
+}
+
+async function denyPresentation() {
+  try {
+    await presentFlow.deny();
+  } catch {
+    /* la prÃ©sentation est dÃ©jÃ  journalisÃ©e ou le conductor est parti */
+  }
+  chrome.runtime.sendMessage({ type: "CLEAR_PENDING" });
+  backToMain();
+}
+
+function backToMain() {
+  location.reload(); // retour propre Ã  la vue principale
+}
+

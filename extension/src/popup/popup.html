@@ -26,6 +26,16 @@
     <!-- Vue principale -->
     <div id="view">
 
+      <!-- Requête OpenID4VP pendante -->
+      <button id="request-banner" class="request-banner" hidden>
+        <span class="li-glyph" aria-hidden="true">🔗</span>
+        <div class="li-body">
+          <p class="li-title" data-i18n="banner.title">Requête de vérification</p>
+          <p class="li-sub" id="banner-source">—</p>
+        </div>
+        <span class="chevron" aria-hidden="true">›</span>
+      </button>
+
       <!-- Carte Identité -->
       <article class="card hero-card">
         <p class="card-eyebrow">Identité</p>
@@ -72,6 +82,34 @@
     </footer>
 
   </main>
+  <template id="present-view">
+    <article class="card verifier-card">
+      <p class="card-eyebrow" data-i18n="present.verifier">Vérificateur</p>
+      <div class="verifier-row">
+        <span class="li-glyph verifier" aria-hidden="true">🏬</span>
+        <div class="li-body">
+          <p class="li-title" id="pv-verifier-name">—</p>
+          <p class="li-sub" id="pv-verifier-id">—</p>
+        </div>
+      </div>
+      <p class="verifier-note" data-i18n="present.note">Demande une vérification via OpenID4VP.</p>
+    </article>
+    <article class="card">
+      <div class="card-head">
+        <h2 class="card-title" data-i18n="present.claims">Attestations à partager</h2>
+      </div>
+      <p class="card-subtitle" data-i18n="present.subtitle">Seuls les éléments activés seront transmis. Le reste reste invisible, même du vérifieur.</p>
+      <ul id="pv-claims" class="list claims"></ul>
+    </article>
+    <div class="present-actions">
+      <button id="pv-deny" class="btn-secondary">Refuser</button>
+      <button id="pv-approve" class="btn-primary">Partager</button>
+    </div>
+    <article class="card result-card" id="pv-result" hidden>
+      <p class="card-eyebrow">Résultat</p>
+      <p id="pv-result-text" class="result-text">—</p>
+    </article>
+  </template>
   <script type="module" src="popup.js"></script>
 </body>
 </html>

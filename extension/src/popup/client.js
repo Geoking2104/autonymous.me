@@ -82,4 +82,37 @@ export class WalletClient {
   async listCredentials() {
     return this.call("identity_wallet", "list_credentials", null);
   }
+
+  // ── openid4vp : flux de présentation (étape 2) ───────────────
+
+  /**
+   * Parse une requête OpenID4VP (URI openid4vp:// ou objet JSON brut).
+   * @param {string} raw
+   * @returns {Promise<{action_hash:unknown, request:{nonce:string, client_id:string, response_uri?:string, presentation_definition?:unknown}, required_claims:string[]}>}
+   */
+  async parseAuthorizationRequest(raw) {
+    return this.call("openid4vp", "parse_authorization_request", { raw });
+  }
+
+  /**
+   * Construit le VP Token (dc+sd-jwt avec holder binding) pour les claims choisis.
+   * @param {{nonce:string, credential_id:string, sd_jwt_token:string, disclosed_claims:string[], all_claims:string[], client_id:string}} input
+   * @returns {Promise<{vp_token:string, disclosed:string[], withheld:string[], nonce:string}>}
+   */
+  async buildVpToken(input) {
+    return this.call("openid4vp", "build_vp_token", input);
+   }
+
+  /**
+   * Journalise la présentation sur la Source Chain (FR-OID-06).
+   * @param {{nonce:string, verifier:string, disclosed_claims:string[], withheld_claims:string[], vp_token:string, outcome:string}} input
+   */
+  async recordPresentation(input) {
+    return this.call("openid4vp", "record_presentation", input);
+  }
+
+  /** @returns {Promise<{action_hash:unknown, record:{nonce:string, verifier:string, disclosed_claims:string, outcome:string, presented_at:string}}[]>} */
+  async listPresentations() {
+    return this.call("openid4vp", "list_presentations", null);
+  }
 }

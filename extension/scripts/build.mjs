@@ -31,6 +31,10 @@ await build({
 console.log("[build] service worker");
 cpSync(join(staticSrc, "background/background.js"), join(out, "dist/background.js"));
 
+// 2b. Content script (copie directe — pas de dépendances npm)
+console.log("[build] content script");
+cpSync(join(staticSrc, "content/content.js"), join(out, "dist/content.js"));
+
 // 3. HTML + CSS du popup
 cpSync(join(staticSrc, "popup/popup.html"), join(out, "src/popup/popup.html"));
 cpSync(join(staticSrc, "popup/popup.css"), join(out, "src/popup/popup.css"));
