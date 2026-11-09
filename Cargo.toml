@@ -1,0 +1,25 @@
+[workspace]
+resolver = "2"
+
+members = [
+  "dnas/core/zomes/identity_wallet",
+  "dnas/core/zomes/openid4vp",
+  "dnas/core/zomes/zk_prover",
+  "dnas/core/zomes/issuer_registry",
+]
+
+[workspace.dependencies]
+hdk          = "=0.7.1"
+hdi          = "=0.8.1"
+holochain_serialized_bytes = "*"
+serde        = { version = "1.0", features = ["derive"] }
+serde_json   = "1.0"
+base64       = "0.22"
+sha2         = "0.10"
+hex          = "0.4"
+thiserror    = "1.0"
+
+[profile.release]
+opt-level    = "z"
+lto          = true
+codegen-units = 1

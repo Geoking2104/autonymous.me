@@ -1,0 +1,10 @@
+---
+manifest_version: "0"
+
+name: autonymous-me
+
+ui:
+  path: ui/dist.zip
+
+happ:
+  path: ./autonymous-me.happ

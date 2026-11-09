@@ -1,0 +1,36 @@
+---
+manifest_version: "0"
+
+name: core
+
+integrity:
+  network_seed: ~
+  properties: ~
+  zomes:
+    - name: identity_wallet_integrity
+      path: "../../target/wasm32-unknown-unknown/release/identity_wallet.wasm"
+    - name: openid4vp_integrity
+      path: "../../target/wasm32-unknown-unknown/release/openid4vp.wasm"
+    - name: zk_prover_integrity
+      path: "../../target/wasm32-unknown-unknown/release/zk_prover.wasm"
+    - name: issuer_registry_integrity
+      path: "../../target/wasm32-unknown-unknown/release/issuer_registry.wasm"
+
+coordinator:
+  zomes:
+    - name: identity_wallet
+      path: "../../target/wasm32-unknown-unknown/release/identity_wallet_coordinator.wasm"
+      dependencies:
+        - name: identity_wallet_integrity
+    - name: openid4vp
+      path: "../../target/wasm32-unknown-unknown/release/openid4vp_coordinator.wasm"
+      dependencies:
+        - name: openid4vp_integrity
+    - name: zk_prover
+      path: "../../target/wasm32-unknown-unknown/release/zk_prover_coordinator.wasm"
+      dependencies:
+        - name: zk_prover_integrity
+    - name: issuer_registry
+      path: "../../target/wasm32-unknown-unknown/release/issuer_registry_coordinator.wasm"
+      dependencies:
+        - name: issuer_registry_integrity

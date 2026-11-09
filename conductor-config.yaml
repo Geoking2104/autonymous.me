@@ -1,0 +1,35 @@
+# Autonymous.me — Holochain Conductor Configuration (0.6)
+# Reference: https://docs.rs/holochain_conductor_api/latest
+#
+# Holochain 0.5+ replaces tx5/WebRTC with kitsune2, and 0.6.1+ defaults to the
+# iroh/QUIC transport which requires a relay_url. DPKI config has been removed.
+#
+# The bootstrap/relay URLs below point at the Holochain Foundation's public
+# dev/test servers (dev-test-bootstrap2.holochain.org). They are rate-limited
+# and carry no uptime guarantee: for production, self-host
+# kitsune2-bootstrap-srv and replace both URLs (see
+# developer.holochain.org/resources/howtos/running-network-infrastructure).
+
+data_root_path: ./conductor-data
+
+keystore:
+  type: lair_server_in_proc
+
+admin_interfaces:
+  - driver:
+      type: websocket
+      port: 9000
+      allowed_origins: "*"
+
+app_interfaces:
+  - driver:
+      type: websocket
+      port: 8888
+      allowed_origins: "*"
+
+network:
+  bootstrap_url: https://dev-test-bootstrap2.holochain.org/
+  relay_url: wss://dev-test-bootstrap2.holochain.org/
+  target_arc_factor: 1
+
+db_sync_level: Normal
