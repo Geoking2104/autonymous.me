@@ -1,22 +1,25 @@
 {
   "name": "@autonymous.me/ui",
   "version": "0.4.0",
-  "description": "Autonymous.me wallet UI â€” OpenID4VP Â· SD-JWT Â· eIDAS 2.0",
+  "description": "Autonymous.me wallet UI - OpenID4VP, SD-JWT, eIDAS 2.0",
   "type": "module",
   "scripts": {
-    "dev":      "vite",
-    "build":    "npm run typecheck && vite build",
+    "dev": "vite",
+    "build": "npm run typecheck && vite build",
     "typecheck": "tsc --noEmit",
-    "preview":  "vite preview",
-    "test":     "vitest run",
-    "lint":     "eslint src --ext .ts,.js"
+    "preview": "vite preview",
+    "test": "vitest run",
+    "lint": "eslint src --ext .ts,.js"
   },
   "dependencies": {
     "@holochain/client": "^0.21.0"
   },
   "devDependencies": {
-    "vite":         "^6.4.3",
-    "typescript":   "^5.3.0",
-    "vitest":       "^3.2.6"
-  }
+    "vite": "^6.4.3",
+    "typescript": "^5.3.0",
+    "vitest": "^3.2.6"
+  },
+  "repository": "https://github.com/Geoking2104/autonymous.me",
+  "bugs": "https://github.com/Geoking2104/autonymous.me/issues",
+  "homepage": "https://github.com/Geoking2104/autonymous.me/tree/main/ui"
 }

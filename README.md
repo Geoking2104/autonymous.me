@@ -6,7 +6,7 @@
 [![eIDAS 2.0](https://img.shields.io/badge/eIDAS-2.0%20compliant-7B68EE)](https://eur-lex.europa.eu/eli/reg/2024/1183/oj)
 [![OpenID4VP](https://img.shields.io/badge/OpenID4VP-v1.0%20Final-00C9A7)](https://openid.net/specs/openid-4-verifiable-presentations-1_0.html)
 [![W3C DID](https://img.shields.io/badge/W3C%20DID-1.0-E8A020)](https://www.w3.org/TR/did-core/)
-[![Status](https://img.shields.io/badge/Status-v0.5--alpha-orange)](https://github.com/Geoking2104/autonymous.me)
+[![Status](https://img.shields.io/badge/Status-v0.5.1--alpha-orange)](https://github.com/Geoking2104/autonymous.me)
 
 ---
 

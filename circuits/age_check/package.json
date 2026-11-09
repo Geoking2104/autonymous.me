@@ -1,19 +1,22 @@
 {
-  "name": "@autonymous.me/circuits-age-check",
-  "version": "0.4.0",
-  "description": "age >= 18 zk-SNARK circuit (Groth16, BN128) for Autonymous.me",
-  "private": true,
-  "scripts": {
-    "compile": "circom age_check.circom --r1cs --wasm --sym -o build -l node_modules",
-    "setup:phase2": "snarkjs groth16 setup build/age_check.r1cs ../ptau/pot12_final.ptau build/age_check_0000.zkey",
-    "prove": "node scripts/prove.js",
-    "verify": "node scripts/verify.js",
-    "test": "node scripts/test_witness.js"
-  },
-  "dependencies": {
-    "circomlib": "^2.0.5"
-  },
-  "devDependencies": {
-    "snarkjs": "^0.7.4"
-  }
+    "name":  "@autonymous.me/circuits-age-check",
+    "version":  "0.4.0",
+    "description":  "age \u003e= 18 zk-SNARK circuit (Groth16, BN128) for Autonymous.me",
+    "private":  true,
+    "scripts":  {
+                    "compile":  "circom age_check.circom --r1cs --wasm --sym -o build -l node_modules",
+                    "setup:phase2":  "snarkjs groth16 setup build/age_check.r1cs ../ptau/pot12_final.ptau build/age_check_0000.zkey",
+                    "prove":  "node scripts/prove.js",
+                    "verify":  "node scripts/verify.js",
+                    "test":  "node scripts/test_witness.js"
+                },
+    "dependencies":  {
+                         "circomlib":  "^2.0.5"
+                     },
+    "devDependencies":  {
+                            "snarkjs":  "^0.7.4"
+                        },
+    "repository":  "https://github.com/Geoking2104/autonymous.me",
+    "bugs":  "https://github.com/Geoking2104/autonymous.me/issues",
+    "homepage":  "https://github.com/Geoking2104/autonymous.me/tree/main/circuits/age_check"
 }

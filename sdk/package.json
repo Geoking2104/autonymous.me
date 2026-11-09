@@ -1,22 +1,25 @@
 {
-  "name": "@autonymous.me/verifier-sdk",
-  "version": "0.4.0",
-  "description": "Verifier-facing TypeScript SDK for Autonymous.me (OpenID4VP + SD-JWT + eIDAS 2.0). See FR-VER-02.",
-  "type": "module",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
-  "scripts": {
-    "build": "tsc -p tsconfig.json",
-    "test": "vitest run"
-  },
-  "dependencies": {
-    "snarkjs": "^0.7.4"
-  },
-  "devDependencies": {
-    "typescript": "^5.3.0",
-    "vitest": "^3.2.6"
-  },
-  "overrides": {
-    "underscore": "1.13.8"
-  }
+    "name":  "@autonymous.me/verifier-sdk",
+    "version":  "0.4.0",
+    "description":  "Verifier-facing TypeScript SDK for Autonymous.me (OpenID4VP + SD-JWT + eIDAS 2.0). See FR-VER-02.",
+    "type":  "module",
+    "main":  "dist/index.js",
+    "types":  "dist/index.d.ts",
+    "scripts":  {
+                    "build":  "tsc -p tsconfig.json",
+                    "test":  "vitest run"
+                },
+    "dependencies":  {
+                         "snarkjs":  "^0.7.4"
+                     },
+    "devDependencies":  {
+                            "typescript":  "^5.3.0",
+                            "vitest":  "^3.2.6"
+                        },
+    "overrides":  {
+                      "underscore":  "1.13.8"
+                  },
+    "repository":  "https://github.com/Geoking2104/autonymous.me",
+    "bugs":  "https://github.com/Geoking2104/autonymous.me/issues",
+    "homepage":  "https://github.com/Geoking2104/autonymous.me/tree/main/sdk"
 }

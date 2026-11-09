@@ -2,7 +2,7 @@
   "name": "autonymous-me",
   "version": "0.5.1",
   "private": true,
-  "description": "Autonymous.me — self-sovereign identity hApp on Holochain 0.7 (zomes, wallet UI, verifier SDK, REST API)",
+  "description": "Autonymous.me - self-sovereign identity hApp on Holochain 0.7 (zomes, wallet UI, verifier SDK, REST API)",
   "workspaces": [
     "ui",
     "api",
@@ -26,5 +26,8 @@
   },
   "engines": {
     "node": ">=22.0.0"
-  }
+  },
+  "repository": "https://github.com/Geoking2104/autonymous.me",
+  "bugs": "https://github.com/Geoking2104/autonymous.me/issues",
+  "homepage": "https://geoking2104.github.io/autonymous.me/"
 }
