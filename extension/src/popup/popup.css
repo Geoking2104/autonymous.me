@@ -1,0 +1,218 @@
+/* ═══════════════════════════════════════════════════════════════
+   Autonymous.me Wallet — design system « Apple »
+   Principes : une action principale, cartes groupées, hiérarchie
+   typographique stricte, états calmes, dark mode automatique.
+   ═══════════════════════════════════════════════════════════════ */
+
+:root {
+  /* Typo — pile système façon SF */
+  --font: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display",
+          "Segoe UI Variable", "Segoe UI", system-ui, sans-serif;
+  --mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+
+  /* Échelle — granularité iOS */
+  --fs-title: 17px;
+  --fs-body:  14px;
+  --fs-foot:  12px;
+  --fs-micro: 11px;
+
+  /* Couleurs — light */
+  --bg:         #F2F2F7;
+  --card:       #FFFFFF;
+  --ink:        #1C1C1E;
+  --ink-2:      #3A3A3C;
+  --ink-3:      #8E8E93;
+  --sep:        rgba(60, 60, 67, 0.12);
+  --accent:     #007AFF;
+  --ok:         #30D158;
+  --warn:       #FF9F0A;
+  --err:        #FF453A;
+  --fill:       rgba(120, 120, 128, 0.12);
+  --hero-ink:   #FFFFFF;
+  --hero-bg:    linear-gradient(135deg, #0A1930 0%, #04101F 100%);
+  --hero-line:  rgba(232, 160, 32, 0.25);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg:     #000000;
+    --card:   #1C1C1E;
+    --ink:    #F2F2F7;
+    --ink-2:  #EBEBF5;
+    --ink-3:  #98989D;
+    --sep:    rgba(84, 84, 88, 0.65);
+    --fill:   rgba(120, 120, 128, 0.24);
+    --hero-bg: linear-gradient(135deg, #0A1930 0%, #04101F 100%);
+  }
+}
+
+/* ── Base ─────────────────────────────────────────────────────── */
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body { width: 360px; }
+
+body {
+  font-family: var(--font);
+  font-size: var(--fs-body);
+  color: var(--ink);
+  background: var(--bg);
+  -webkit-font-smoothing: antialiased;
+}
+
+button { font: inherit; color: inherit; background: none; border: none; cursor: pointer; }
+
+/* ── Structure ────────────────────────────────────────────────── */
+#app { display: flex; flex-direction: column; min-height: 560px; }
+
+.nav {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 10px 16px 6px;
+}
+.nav-id { display: flex; align-items: center; gap: 7px; }
+.nav-glyph { color: #E8A020; font-size: 15px; }
+.nav-title { font-size: var(--fs-title); font-weight: 600; letter-spacing: -0.2px; }
+.nav-lang {
+  font-size: var(--fs-micro); font-weight: 600; color: var(--accent);
+  padding: 3px 8px; border-radius: 999px; background: var(--fill);
+}
+
+/* ── Bandeau d'état ───────────────────────────────────────────── */
+.status {
+  display: flex; align-items: center; gap: 7px;
+  margin: 6px 16px 10px; padding: 7px 12px;
+  border-radius: 10px; background: var(--fill);
+  font-size: var(--fs-foot); color: var(--ink-2);
+}
+.dot {
+  width: 7px; height: 7px; border-radius: 50%;
+  background: var(--ink-3); flex-shrink: 0;
+}
+.dot.ok      { background: var(--ok); }
+.dot.err     { background: var(--err); }
+.dot.waiting { background: var(--warn); animation: pulse 1.4s ease infinite; }
+@keyframes pulse { 50% { opacity: 0.35; } }
+
+/* ── Cartes groupées ──────────────────────────────────────────── */
+#view { flex: 1; padding: 0 16px 12px; display: flex; flex-direction: column; gap: 14px; }
+
+.card {
+  background: var(--card);
+  border-radius: 14px;
+  padding: 14px 16px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+}
+
+.card-head {
+  display: flex; align-items: baseline; justify-content: space-between;
+  margin-bottom: 4px;
+}
+.card-title { font-size: var(--fs-title); font-weight: 600; letter-spacing: -0.2px; }
+.card-count {
+  font-size: var(--fs-micro); font-weight: 600; color: var(--ink-3);
+  background: var(--fill); padding: 2px 8px; border-radius: 999px;
+}
+.card-subtitle { font-size: var(--fs-foot); color: var(--ink-3); margin-bottom: 8px; }
+.card-eyebrow {
+  font-size: var(--fs-micro); font-weight: 600; text-transform: uppercase;
+  letter-spacing: 0.8px; color: var(--ink-3); margin-bottom: 4px;
+}
+
+/* ── Carte héro (Identité) ────────────────────────────────────── */
+.hero-card {
+  background: var(--hero-bg);
+  color: var(--hero-ink);
+  border: 1px solid var(--hero-line);
+  padding: 18px 16px;
+}
+.hero-card .card-eyebrow { color: #E8A020; }
+.did {
+  font-family: var(--mono);
+  font-size: 13px; font-weight: 500; line-height: 1.45;
+  word-break: break-all;
+  margin: 2px 0 10px;
+}
+.hero-meta { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 12px; }
+.meta-chip {
+  font-size: var(--fs-micro); font-family: var(--mono);
+  padding: 3px 9px; border-radius: 999px;
+  background: rgba(255, 255, 255, 0.08); color: rgba(255, 255, 255, 0.75);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+.meta-chip.ok { color: #30D158; border-color: rgba(48, 209, 88, 0.3); }
+.copy-btn {
+  font-size: var(--fs-foot); font-weight: 600; color: #E8A020;
+  padding: 7px 14px; border-radius: 999px;
+  background: rgba(232, 160, 32, 0.12); border: 1px solid rgba(232, 160, 32, 0.3);
+  transition: background 0.15s;
+}
+.copy-btn:active { background: rgba(232, 160, 32, 0.25); }
+
+/* ── Listes (attestations, chaîne) ────────────────────────────── */
+.list { list-style: none; }
+.list li {
+  display: flex; align-items: center; gap: 10px;
+  padding: 10px 0;
+  border-bottom: 0.5px solid var(--sep);
+}
+.list li:last-child { border-bottom: none; }
+
+.li-glyph {
+  width: 34px; height: 34px; border-radius: 9px; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 15px; background: var(--fill);
+}
+.li-glyph.credential { background: rgba(0, 122, 255, 0.12); }
+.li-glyph.chain      { background: rgba(48, 209, 88, 0.12); font-size: 11px; font-family: var(--mono); color: var(--ok); }
+
+.li-body { flex: 1; min-width: 0; }
+.li-title { font-size: var(--fs-body); font-weight: 500; }
+.li-sub   { font-size: var(--fs-micro); color: var(--ink-3); margin-top: 1px; }
+
+/* ── États vides / erreur ─────────────────────────────────────── */
+.empty {
+  font-size: var(--fs-foot); color: var(--ink-3);
+  padding: 14px 0 6px; text-align: center;
+}
+
+/* ── Pied ─────────────────────────────────────────────────────── */
+.foot {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 10px 20px calc(10px + env(safe-area-inset-bottom));
+  border-top: 0.5px solid var(--sep);
+}
+.foot-btn {
+  font-size: var(--fs-foot); font-weight: 500; color: var(--accent);
+  padding: 6px 10px;
+}
+.foot-sep { flex: 1; }
+
+/* ── Réglages conductor (panneau déroulant) ───────────────────── */
+.settings-panel {
+  display: grid; grid-template-rows: 0fr;
+  transition: grid-template-rows 0.25s ease;
+}
+.settings-panel.open { grid-template-rows: 1fr; }
+.settings-inner {
+  overflow: hidden;
+  display: flex; flex-direction: column; gap: 8px;
+  padding: 0 16px;
+}
+.settings-inner.open { padding: 12px 16px; }
+
+.field label {
+  display: block; font-size: var(--fs-micro); font-weight: 600;
+  color: var(--ink-3); text-transform: uppercase; letter-spacing: 0.6px;
+  margin-bottom: 4px;
+}
+.field input {
+  width: 100%; font: inherit; font-family: var(--mono); font-size: 13px;
+  padding: 8px 10px; border-radius: 9px;
+  border: 0.5px solid var(--sep); background: var(--card); color: var(--ink);
+}
+.field input:focus { outline: none; border-color: var(--accent); }
+
+/* ── Reduced motion ───────────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  .dot.waiting { animation: none; }
+  .settings-panel { transition: none; }
+}

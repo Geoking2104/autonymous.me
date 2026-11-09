@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Autonymous.me</title>
+  <link rel="stylesheet" href="popup.css" />
+</head>
+<body>
+  <main id="app" aria-live="polite">
+
+    <!-- En-tête -->
+    <header class="nav">
+      <div class="nav-id">
+        <span class="nav-glyph" aria-hidden="true">◈</span>
+        <span class="nav-title">Wallet</span>
+      </div>
+      <button id="lang" class="nav-lang" aria-label="Language">FR</button>
+    </header>
+
+    <!-- État conductor -->
+    <section id="status" class="status" role="status">
+      <span id="status-dot" class="dot"></span>
+      <span id="status-text">Recherche du conductor…</span>
+    </section>
+
+    <!-- Vue principale -->
+    <div id="view">
+
+      <!-- Carte Identité -->
+      <article class="card hero-card">
+        <p class="card-eyebrow">Identité</p>
+        <h1 class="did" id="did-value">—</h1>
+        <div class="hero-meta">
+          <span class="meta-chip" id="did-context">default</span>
+          <span class="meta-chip ok" id="did-active" hidden>active</span>
+        </div>
+        <button id="copy-did" class="copy-btn">Copier le DID</button>
+      </article>
+
+      <!-- Attestations -->
+      <article class="card">
+        <div class="card-head">
+          <h2 class="card-title">Attestations</h2>
+          <span class="card-count" id="cred-count">0</span>
+        </div>
+        <ul id="cred-list" class="list"></ul>
+        <p id="cred-empty" class="empty" hidden>
+          Aucune attestation importée pour l'instant.
+        </p>
+      </article>
+
+      <!-- Source Chain -->
+      <article class="card">
+        <div class="card-head">
+          <h2 class="card-title">Source Chain</h2>
+          <span class="card-count" id="chain-count">0</span>
+        </div>
+        <p class="card-subtitle">Journal immuable, sur votre appareil.</p>
+        <ul id="chain-list" class="list chain"></ul>
+        <p id="chain-empty" class="empty" hidden>
+          La chaîne apparaîtra après la création du DID.
+        </p>
+      </article>
+
+    </div>
+
+    <!-- Pied -->
+    <footer class="foot">
+      <button id="settings" class="foot-btn">Conductor</button>
+      <span class="foot-sep" aria-hidden="true"></span>
+      <button id="retry" class="foot-btn">Réessayer</button>
+    </footer>
+
+  </main>
+  <script type="module" src="popup.js"></script>
+</body>
+</html>

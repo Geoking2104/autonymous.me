@@ -47,3 +47,7 @@ api/dist/
 
 # Root npm workspace
 /node_modules/
+
+# Extension build output
+extension/dist-zip/
+extension/autonymous-wallet.zip

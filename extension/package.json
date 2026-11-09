@@ -1,0 +1,18 @@
+{
+  "name": "@autonymous.me/extension",
+  "version": "0.5.1",
+  "private": true,
+  "description": "Autonymous.me wallet - Chrome extension (Manifest V3), Apple-style popup, read-only step 1",
+  "type": "module",
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "icons": "node scripts/make-icons.mjs"
+  },
+  "dependencies": {
+    "@holochain/client": "^0.21.0"
+  },
+  "devDependencies": {
+    "esbuild": "^0.24.0",
+    "sharp": "^0.35.5"
+  }
+}
